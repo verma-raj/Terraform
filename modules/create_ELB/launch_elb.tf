@@ -1,5 +1,5 @@
-/*
-resource "aws_lb_target_group" "demo_tg" {
+
+resource "aws_lb_target_group" "demo_tg" { // Creation of target group
   health_check {
     interval = 5
     healthy_threshold = 3
@@ -14,7 +14,7 @@ resource "aws_lb_target_group" "demo_tg" {
   vpc_id   = var.vpcid
 }
 
-resource "aws_lb" "demo-aws-lb" {
+resource "aws_lb" "demo-aws-lb" {   // creation of load balancer
   name               = "demo-app-lb"
   internal           = false
   load_balancer_type = "application"
@@ -27,7 +27,7 @@ resource "aws_lb" "demo-aws-lb" {
   }
 }
 
-resource "aws_lb_listener" "demo_lb_listener" {
+resource "aws_lb_listener" "demo_lb_listener" {  // creation of listener
   load_balancer_arn = aws_lb.demo-aws-lb.arn
   port              = "3000"
   protocol          = "HTTP"
@@ -39,15 +39,15 @@ resource "aws_lb_listener" "demo_lb_listener" {
     target_group_arn = aws_lb_target_group.demo_tg.arn
   }
 }
-/*
-resource "aws_lb_target_group_attachment" "demo-tg-attachment" {
+
+resource "aws_lb_target_group_attachment" "demo-tg-attachment" {  // Attachment to target group
   target_group_arn = aws_lb_target_group.demo_tg.arn
   count            = var.instance_count
-  target_id        = "${var.instance_id[1]}"
-  #target_id       =  "${element(var.instance_id , count.index)}"
+  #target_id        = "${var.instance_id[1]}"
+  target_id       =  "${element(var.instance_id , count.index)}"
   port             = 80
 }
 
-*/
+
 
 

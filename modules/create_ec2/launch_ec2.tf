@@ -11,7 +11,7 @@ resource "aws_instance" "ec2" {
   key_name = "demo-key"
     tags = {
     Name = "${var.name}-${count.index+1}"
-  
+    
   }
 }
 
@@ -21,20 +21,32 @@ resource "aws_key_pair" "key-pair" {
 }
 
 
-data "aws_instance" "instanceinfo"{
-    count = "${var.instance_count}"
-    filter {
-        name = "tag:Name"
-        values = ["${var.name}-${count.index+1}"]
+# data "aws_instance" "instanceinfo"{
+#     count = var.instance_count
+#     filter {
+#         name = "tag:Name"
+#         values = ["${var.name}-${count.index+1}"]
 
-    }
+#     }
 
-    depends_on = [ aws_instance.ec2 ]
+#     # filter {
+#     #     name = "tag:Proj"
+#     #     values = ["Test-${count.index+1}"]
+
+#     # }
+
+#     depends_on = [ aws_instance.ec2 ]
+# }
+
+output "returnec2id"{   // show ec2 IP
+    value = aws_instance.ec2[*].id
 }
 
-output "returninstanceid" {
-    value = data.aws_instance.instanceinfo[*].id
+output "returnec2az"{  // show ec2 AZs
+    value = aws_instance.ec2[*].availability_zone
 }
 
-
+output "returnec2privIP"{  // show ec2 private IP
+    value = aws_instance.ec2[*].private_ip
+}
 
